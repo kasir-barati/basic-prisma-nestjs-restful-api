@@ -1,0 +1,32 @@
+{
+    "include": ["src"],
+    "compilerOptions": {
+        "incremental": true,
+        "target": "es2017",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "module": "commonjs",
+        "baseUrl": "./",
+        "paths": {
+            "@project-name/src/*": ["src/*"],
+            "@project-name/auth/*": ["./src/modules/auth/*"],
+            "@project-name/user/*": ["./src/modules/user/*"]
+        },
+        "resolveJsonModule": true,
+        "declaration": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "removeComments": true,
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": false,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "strictBindCallApply": true,
+        "strictPropertyInitialization": false,
+        "alwaysStrict": true,
+        "noFallthroughCasesInSwitch": false,
+        "skipLibCheck": true
+    }
+}

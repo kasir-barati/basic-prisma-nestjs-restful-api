@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator prismaClassGenerator {
+  provider = "prisma-class-generator"
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String?   @db.VarChar(200)
+  family    String?   @db.VarChar(200)
+  email     String    @unique(map: "user_email_unique_constraints") @db.VarChar(320)
+  username  String    @unique(map: "user_username_unique_constraints") @db.VarChar(200)
+  password  String
+  avatar    String?
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamptz(0)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(0)
+
+  // Relationships
+  Files File[]
+  @@map("users")
+}
+
+model File {
+  id        String   @id @default(uuid())
+  filename  String   @db.VarChar(500)
+  size      Int?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(0)
+
+  // Relationships
+  userId      String   @map("user_id")
+  User        User?    @relation(fields: [userId], references: [id])
+  mimetypeKey String
+  Mimetype    Mimetype @relation(fields: [mimetypeKey], references: [key])
+
+  @@map("files")
+}
+
+model Mimetype {
+  key                   String   @id @default(uuid())
+  value                 String   @unique(map: "mime_type_value_unique_constraint")
+  maximumSizeInMegabyte Int      @db.SmallInt
+  createdAt             DateTime @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt             DateTime @updatedAt @map("updated_at") @db.Timestamptz(0)
+
+  // Relationships
+  Files File[]
+
+  @@map("mime_types")
+}
